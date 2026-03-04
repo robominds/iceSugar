@@ -16,3 +16,6 @@ sw/firmware.bin
 # Editor
 *.swp
 *~
+
+# Local toolchain builds
+.tools/

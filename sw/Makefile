@@ -36,15 +36,7 @@ $(BIN): $(ELF)
 # @address format varies by binutils version.
 $(HEX): $(BIN)
 	@mkdir -p ../build
-	python3 -c "
-import sys
-data = open('$(BIN)', 'rb').read()
-# Pad to 4-byte boundary
-data += b'\x00' * ((4 - len(data) % 4) % 4)
-for i in range(0, len(data), 4):
-    word = int.from_bytes(data[i:i+4], 'little')
-    print(f'{word:08x}')
-" > $@
+	python3 -c 'import pathlib; data = pathlib.Path("$(BIN)").read_bytes(); data += b"\x00" * ((4 - len(data) % 4) % 4); print("\n".join("{:08x}".format(int.from_bytes(data[i:i+4], "little")) for i in range(0, len(data), 4)))' > $@
 	@echo "Firmware hex written to $(HEX)"
 	$(SIZE) $(ELF)
 

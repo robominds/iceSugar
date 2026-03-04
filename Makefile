@@ -14,7 +14,7 @@
 
 BUILD   := build
 PCF     := constraints/icesugar_nano.pcf
-RTL     := rtl/top.v rtl/soc.v rtl/picorv32.v
+RTL     := rtl/top.v rtl/soc.v rtl/femtorv32_quark.v
 
 # iCE40LP1K in CM36 (36-ball BGA) package, 12 MHz clock
 DEVICE  := lp1k

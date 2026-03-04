@@ -1,8 +1,8 @@
 /* link.ld - Linker script for PicoRV32 SoC on iCESugar-nano
  * Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
  *
- * Single 8 KB BRAM region starting at 0x0 holds code, data, BSS, and stack.
- * The stack grows downward from 0x2000 (top of BRAM).
+ * Single 6 KB BRAM region starting at 0x0 holds code, data, BSS, and stack.
+ * The stack grows downward from 0x1800 (top of BRAM).
  * Peripheral registers (e.g. LED at 0x10000000) are accessed directly
  * as volatile pointers in C; they are not part of any memory region here.
  */
@@ -11,7 +11,7 @@ ENTRY(_start)
 
 MEMORY
 {
-    bram (rwx) : ORIGIN = 0x00000000, LENGTH = 8K
+    bram (rwx) : ORIGIN = 0x00000000, LENGTH = 6K
 }
 
 SECTIONS
@@ -35,7 +35,7 @@ SECTIONS
         _bss_end = .;
     } > bram
 
-    /* Stack top — hardware STACKADDR sets sp = 0x2000 at reset */
+    /* Stack top */
     _stack_top = ORIGIN(bram) + LENGTH(bram);
 
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }

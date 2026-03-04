@@ -1,8 +1,7 @@
 /* start.S - Minimal RISC-V startup for PicoRV32 SoC
  * Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
  *
- * PicoRV32 hardware initialises x2 (sp) to STACKADDR (0x2000) at reset,
- * but we set it here explicitly for simulator compatibility.
+ * Stack pointer is set explicitly to top of BRAM.
  */
 
 .section .text.start
@@ -10,8 +9,8 @@
 .type   _start, @function
 
 _start:
-    /* Set stack pointer to top of 8 KB BRAM */
-    li   sp, 0x2000
+    /* Set stack pointer to top of 6 KB BRAM */
+    li   sp, 0x1800
 
     /* Zero the .bss section */
     la   a0, _bss_start
