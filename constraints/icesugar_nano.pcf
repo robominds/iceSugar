@@ -1,0 +1,6 @@
+# iCESugar-nano physical constraints
+# iCE40LP1K-CM36 package
+# Verified from wuxx/icesugar-nano repository
+
+set_io clk  D1
+set_io led  B6

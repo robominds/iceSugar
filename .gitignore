@@ -1,0 +1,18 @@
+# Build artifacts
+build/
+*.asc
+*.bin
+*.json
+*.blif
+*.log
+
+# Firmware intermediates
+sw/firmware.elf
+sw/firmware.bin
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*~
