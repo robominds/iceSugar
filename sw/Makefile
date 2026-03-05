@@ -12,7 +12,7 @@ SIZE    := $(RISCV_PREFIX)size
 
 ARCH    := -march=rv32i -mabi=ilp32
 CFLAGS  := $(ARCH) -O2 -Wall -Wextra -ffreestanding -nostdlib -fno-builtin
-LDFLAGS := $(ARCH) -nostdlib -Wl,-T,link.ld -Wl,--no-relax
+LDFLAGS := $(ARCH) -nostdlib -Wl,-T,link.ld -Wl,--no-relax -lgcc
 
 SRCS    := start.S main.c
 ELF     := firmware.elf

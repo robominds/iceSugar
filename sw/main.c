@@ -25,8 +25,12 @@ static void delay(volatile uint32_t n)
 
 int main(void)
 {
+    int32_t i = 0;
     while (1) {
-        FREQ_REG = 3000000u;  /* 2 Hz */
+        i = i + 1;
+        if (i == 5)
+            i = 0;
+        FREQ_REG = i*3000000u;  /* 2 Hz */
         delay(2000000u);
     }
 
