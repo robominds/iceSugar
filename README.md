@@ -1,11 +1,10 @@
-# iCESugar-nano LED Blink with PicoRV32
+# iCESugar-nano LED Blink with FemtoRV32
 
 Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
 
 A minimal RISC-V SoC for the [iCESugar-nano](https://github.com/wuxx/icesugar-nano) FPGA board.
-The FPGA implements a PicoRV32 soft-core that runs C firmware. The firmware cycles through five
-LED blink frequencies by writing to a memory-mapped register; the FPGA's LED controller toggles
-pin B6 at the requested rate.
+The FPGA implements a FemtoRV32 Quark soft-core that runs C firmware. The firmware writes a
+memory-mapped register to set LED blink frequency; the FPGA's LED controller toggles pin B6.
 
 ## Hardware
 
@@ -22,7 +21,7 @@ pin B6 at the requested rate.
 ```
 iCE40LP1K
 ┌─────────────────────────────────────────────┐
-│  PicoRV32 (RV32I minimal, ~800-1000 LUTs)   │
+│  FemtoRV32 Quark (RV32I minimal)            │
 │    executes firmware from BRAM              │
 │    writes half-period to freq_reg           │
 │                                             │
@@ -31,22 +30,15 @@ iCE40LP1K
 │    toggles LED on match → pin B6            │
 │                                             │
 │  Memory map:                                │
-│    0x00000000–0x00001FFF  BRAM (8 KB)       │
-│    0x10000000             LED freq register │
+│    0x00000000–0x000017FF  BRAM (6 KB)       │
+│    0x00001800             LED freq register │
 └─────────────────────────────────────────────┘
 ```
 
-### Blink frequencies
+### Blink frequency
 
-The firmware cycles through these rates (~2 s between each change):
-
-| freq_reg value | Half-period | Rate |
-|----------------|-------------|------|
-| 6 000 000 | 500 ms | 1 Hz |
-| 3 000 000 | 250 ms | 2 Hz |
-| 1 500 000 | 125 ms | 4 Hz |
-| 750 000 | 62.5 ms | 8 Hz |
-| 375 000 | 31.25 ms | 16 Hz |
+Current firmware writes `freq_reg = 3000000`, which gives a 250 ms half-period
+at 12 MHz and a 2 Hz LED blink.
 
 ## Prerequisites
 
@@ -80,27 +72,26 @@ iceSugar/
 │   └── icesugar_nano.pcf      # pin constraints (B6=LED, D1=CLK)
 ├── rtl/
 │   ├── top.v                  # top-level I/O and SoC instantiation
-│   ├── picorv32.v             # PicoRV32 RISC-V core (ISC licence, YosysHQ)
-│   └── soc.v                  # CPU + BRAM + LED controller + memory decode
+│   ├── soc.v                  # CPU + BRAM + LED controller + memory decode
+│   └── femtorv32_quark.v      # FemtoRV32 Quark CPU core
 └── sw/
     ├── Makefile               # firmware build
     ├── start.S                # startup: set sp, zero BSS, call main
-    ├── link.ld                # linker script: 8 KB BRAM at 0x0
-    └── main.c                 # frequency cycling loop
+    ├── link.ld                # linker script: 6 KB BRAM at 0x0
+    └── main.c                 # writes fixed 2 Hz blink setting
 ```
 
 ## LUT budget note
 
-The iCE40LP1K has only 1 280 LUTs. PicoRV32 is configured with non-essential features
-disabled (no barrel shifter, no counters, no MUL/DIV, no IRQ) to stay within budget.
-After synthesis, check `build/synth.log` for the `ICESTORM_LC` count — it must be < 1 280.
+The iCE40LP1K has only 1 280 LUTs. This project uses FemtoRV32 Quark so the design fits
+comfortably on LP1K together with BRAM and the LED peripheral.
+After synthesis, check `build/synth.log` for `ICESTORM_LC` — it must be < 1 280.
 
 If synthesis fails due to LUT overflow:
-1. Disable registers 16–31: add `.ENABLE_REGS_16_31(0)` in `rtl/soc.v` and
-   recompile firmware with `-march=rv32e -mabi=ilp32e`.
-2. Switch to FemtoRV32 Quark (proven to fit iCE40LP1K IceStick in ~980 LUTs).
+1. Keep the build on FemtoRV32 Quark (`rtl/femtorv32_quark.v`).
+2. Review `build/synth.log` and `build/pnr.log` for the largest contributors.
+3. Reduce BRAM footprint or simplify peripherals if needed.
 
 ## Licence
 
 Project source files: MIT
-`rtl/picorv32.v`: ISC licence — Copyright (C) 2015 Claire Xenia Wolf

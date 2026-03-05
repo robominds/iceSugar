@@ -1,4 +1,4 @@
-# sw/Makefile - Firmware build for PicoRV32 on iCESugar-nano
+# sw/Makefile - Firmware build for FemtoRV32 on iCESugar-nano
 # Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
 #
 # Toolchain: riscv64-elf-gcc from "brew install riscv64-elf-gcc"

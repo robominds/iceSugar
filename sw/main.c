@@ -1,4 +1,4 @@
-/* main.c - LED frequency cycling firmware for PicoRV32 SoC
+/* main.c - LED frequency control firmware for FemtoRV32 SoC
  * Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
  *
  * Writes a fixed half-period value (in 12 MHz clock cycles) to the
@@ -13,7 +13,7 @@
 #define FREQ_REG (*(volatile uint32_t *)0x00001800u)
 
 /*
- * Busy-wait delay. At 12 MHz with ~4 CPI average for PicoRV32,
+ * Busy-wait delay. At 12 MHz with a small RV32I soft-core,
  * the inner loop body takes roughly 3-4 cycles (~0.33 us per iteration).
  * n = 2 000 000 gives approximately 2 seconds of delay.
  */

@@ -1,4 +1,4 @@
-/* start.S - Minimal RISC-V startup for PicoRV32 SoC
+/* start.S - Minimal RISC-V startup for FemtoRV32 SoC
  * Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
  *
  * Stack pointer is set explicitly to top of BRAM.

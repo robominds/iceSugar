@@ -1,9 +1,9 @@
-/* link.ld - Linker script for PicoRV32 SoC on iCESugar-nano
+/* link.ld - Linker script for FemtoRV32 SoC on iCESugar-nano
  * Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
  *
  * Single 6 KB BRAM region starting at 0x0 holds code, data, BSS, and stack.
  * The stack grows downward from 0x1800 (top of BRAM).
- * Peripheral registers (e.g. LED at 0x10000000) are accessed directly
+ * Peripheral registers (e.g. LED at 0x00001800) are accessed directly
  * as volatile pointers in C; they are not part of any memory region here.
  */
 

@@ -1,4 +1,4 @@
-# Makefile - iCESugar-nano PicoRV32 LED blink project
+# Makefile - iCESugar-nano FemtoRV32 LED blink project
 # Authors: Mark Castelluccio; AI-assisted (Claude claude-sonnet-4-6, Anthropic)
 #
 # Targets:
