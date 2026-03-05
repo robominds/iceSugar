@@ -92,6 +92,20 @@ If synthesis fails due to LUT overflow:
 2. Review `build/synth.log` and `build/pnr.log` for the largest contributors.
 3. Reduce BRAM footprint or simplify peripherals if needed.
 
+## FPGA resource usage
+
+Measured from `build/synth.log` (Yosys `synth_ice40`) on 2026-03-04:
+
+| Resource | Used | Device total (iCE40LP1K) | Utilization |
+|----------|------|---------------------------|-------------|
+| `SB_LUT4` | 993 | 1280 LUT4 / logic cells | 77.6% |
+| `SB_RAM40_4K` | 16 | 16 EBR blocks | 100.0% |
+| Flip-flops (`SB_DFF*` total) | 231 | 1280 FF slots (one per logic cell) | 18.0% |
+
+Notes:
+1. BRAM is fully utilized by the 6 KB firmware memory implementation and packing granularity.
+2. Timing and post-place-and-route utilization are reported by `nextpnr-ice40` in `build/pnr.log` when that tool is available.
+
 ## Licence
 
 Project source files: MIT
